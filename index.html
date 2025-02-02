@@ -45,18 +45,56 @@
             transition: background 0.2s ease-out;
         }
 
-        /* Conteneur du menu IPTV */
-        .iptv-menu {
+        /* Particules animées */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particles span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 195, 255, 0.5);
+            box-shadow: 0 0 10px #00c3ff, 0 0 20px #00c3ff, 0 0 40px #00c3ff;
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Conteneur du formulaire de login */
+        .login-container {
             background-color: rgba(255, 51, 51, 0.1);
-            padding: 25px;
+            padding: 30px;
             border-radius: 20px;
             width: 90%; /* Largeur maximale */
-            max-width: 600px; /* Largeur maximale pour une meilleure lisibilité */
+            max-width: 400px; /* Largeur maximale pour une meilleure lisibilité */
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 10px #00c3ff, 0 0 20px #00c3ff, 0 0 40px #00c3ff;
             animation: glow 3s infinite alternate;
             z-index: 2;
+            text-align: center;
         }
 
         @keyframes glow {
@@ -69,6 +107,115 @@
             100% {
                 box-shadow: 0 0 10px #00c3ff, 0 0 20px #00c3ff, 0 0 40px #00c3ff;
             }
+        }
+
+        .login-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00c3ff;
+            animation: colorChange 2s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #00c3ff;
+            }
+            50% {
+                color: #ff00ff;
+            }
+            100% {
+                color: #00c3ff;
+            }
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-form input {
+            padding: 10px;
+            border: 2px solid #00c3ff;
+            border-radius: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #00c3ff;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-form input::placeholder {
+            color: rgba(0, 174, 255, 0.7);
+        }
+
+        .login-form input:focus {
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        }
+
+        .login-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            background-color: #00c3ff;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            display: none;
+            margin-top: 10px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+            75% {
+                transform: translateX(-10px);
+            }
+        }
+
+        /* Masquer le contenu principal par défaut */
+        .iptv-menu {
+            display: none;
+        }
+
+        /* Conteneur du menu IPTV */
+        .iptv-menu {
+            background-color: rgba(255, 51, 51, 0.1);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%; /* Largeur maximale */
+            max-width: 600px; /* Largeur maximale pour une meilleure lisibilité */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px #00c3ff, 0 0 20px #00c3ff, 0 0 40px #00c3ff;
+            animation: glow 3s infinite alternate;
+            z-index: 2;
         }
 
         .iptv-menu h1 {
@@ -242,29 +389,26 @@
         .dev-by a:hover {
             text-decoration: underline;
         }
-
-        @keyframes colorChange {
-            0% {
-                color: #00c3ff;
-            }
-            25% {
-                color: #ff00ff;
-            }
-            50% {
-                color: #00ff00;
-            }
-            75% {
-                color: #ff0000;
-            }
-            100% {
-                color: #00c3ff;
-            }
-        }
     </style>
 </head>
 
 <body>
 
+    <!-- Particules animées -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Formulaire de login -->
+    <div class="login-container">
+        <h1>Login</h1>
+        <form class="login-form">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="key" placeholder="Clé d'accès" required>
+            <button type="button" onclick="login()">Se connecter</button>
+            <div class="error-message" id="error-message">Nom d'utilisateur ou clé incorrecte.</div>
+        </form>
+    </div>
+
+    <!-- Contenu principal (masqué par défaut) -->
     <div class="iptv-menu">
         <h1>IPTV Match Viewer</h1>
 
@@ -280,7 +424,7 @@
                 <label for="match1">
                     <img src="https://github.com/WeansHHN/weanshhn.github.io/blob/main/img/gif/gifwaifu.gif?raw=true" class="icon"> Match 1: Team A vs Team B
                 </label>
-                <input type="checkbox" id="match1" onchange="activateMatch('https://example.com/football-match-1')">
+                <input type="checkbox" id="match1" onchange="activateMatch('https://fram.sport4all.online/albaplayer/bein1/?serv=2')">
             </div>
             <div class="toggle-item">
                 <label for="match2">
@@ -342,9 +486,27 @@
 
         <div class="dev-by">
            𝘿𝙚𝙫 𝘽𝙮<a href="https://example.com" target="_blank"> 𝙈𝙤𝙝𝙖</a>
+        </div>
     </div>
 
     <script>
+        // Fonction de connexion
+        function login() {
+            const username = document.getElementById('username').value;
+            const key = document.getElementById('key').value;
+
+            // Vérification des identifiants
+            if (username === "user" && key === "user") {
+                // Afficher le contenu principal
+                document.querySelector('.iptv-menu').style.display = 'block';
+                document.querySelector('.login-container').style.display = 'none';
+            } else {
+                // Afficher un message d'erreur
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        // Fonctions existantes...
         function openTab(tabId) {
             var tabs = document.getElementsByClassName("tab-content");
             var buttons = document.getElementsByClassName("tab-button");
@@ -364,7 +526,7 @@
             window.location.href = url; // Redirige vers le lien du match
         }
 
-        // Ajout de l'effet de lumière qui suit la souris
+        // Effet de lumière qui suit la souris
         document.addEventListener('mousemove', function (e) {
             const x = e.clientX;
             const y = e.clientY;
